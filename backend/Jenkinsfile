@@ -1,0 +1,83 @@
+pipeline {
+    agent any
+    
+    environment{
+        JWT_SECRET = '[?m-A9+^/(A5VK]p}gZ_Jr@ZuRa%5:ng'
+    }
+
+    stages {
+        stage('Pull code') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Download dependency') {
+            steps {
+                sh 'cd backend && npm install'
+            }
+        }
+        stage('Run unit test') {
+            steps {
+                dir('./backend') {
+                    sh 'npm run test:db'
+                    publishHTML target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: "./coverage",
+                        reportFiles: "index.html",
+                        reportName: 'Unit Test Coverage Report'
+                    ]
+                   
+                }
+            }
+        }
+        stage('Run component test') {
+            steps {
+                dir('./backend') {
+                    sh 'npm run test:api'
+                    publishHTML target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: "./coverage",
+                        reportFiles: "index.html",
+                        reportName: 'Component Test Coverage Report'
+                    ]
+                    
+                }
+            }
+        }
+        stage("Code coverage report") {
+            steps {
+                clover(cloverReportDir: 'backend/coverage', cloverReportFileName: 'clover.xml',
+                    healthyTarget: [methodCoverage: 70, conditionalCoverage: 80, statementCoverage: 80],
+                    unhealthyTarget: [methodCoverage: 50, conditionalCoverage: 50, statementCoverage: 50],
+                    failingTarget: [methodCoverage: 0, conditionalCoverage: 0, statementCoverage: 0]
+                )
+            }
+        }
+        stage("Deploy") {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'TEAM8_USERNAME', variable: 'TEAM8_USERNAME'), 
+                    string(credentialsId: 'TEAM8_BACKEND_HOST', variable: 'TEAM8_BACKEND_HOST'), 
+                    string(credentialsId: 'TEAM8_HOST_PASSWORD', variable: 'TEAM8_HOST_PASSWORD')])
+                {
+                    script{
+                        def remote = [:]
+                        remote.name = TEAM8_USERNAME
+                        remote.host = TEAM8_BACKEND_HOST
+                        remote.user = TEAM8_USERNAME
+                        remote.password = TEAM8_HOST_PASSWORD
+                        remote.allowAnyHosts = true
+                        sshCommand remote: remote, command: "git clone -b main https://github.com/taritinth/sw-dev-tools-and-environments-project.git team-8-backend"
+                        sshCommand remote: remote, command: "docker-compose -f team-8-backend/docker-compose-build.yml build --no-cache backend"
+                        sshCommand remote: remote, command: "docker stack deploy --compose-file team-8-backend/docker-compose-deploy-backend.yml team-8-backend"
+                        sshCommand remote: remote, command: "rm -r team-8-backend"
+                    }
+                }
+            }
+        }
+    }
+}
