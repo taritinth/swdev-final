@@ -1,7 +1,7 @@
-const { Job } = require("../models/jobs.model");
+const { Announcement } = require("../models/announcement.model");
 
-const findAllJobs = ({ title, type }) =>
-  Job.find({
+const findAnnouncements = ({ title, type }) =>
+  Announcement.find({
     $or: [
       {
         title: new RegExp(title, "i"),
@@ -13,5 +13,5 @@ const findAllJobs = ({ title, type }) =>
     .sort({ createdAt: -1 });
 
 module.exports = {
-  findAllJobs,
+  findAnnouncements,
 };

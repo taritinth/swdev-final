@@ -67,31 +67,59 @@
           </v-card>
 
         </div>
-        <v-row>
-          <v-col v-for="card in cards" :key="card" cols="12">
-            <v-card>
-              <v-subheader>{{ card }}</v-subheader>
-              <v-list two-line>
-                <template v-for="n in 6">
-                  <v-list-item :key="n">
-                    <v-list-item-avatar color="grey darken-1">
-                    </v-list-item-avatar>
+        <div class=" w-full p-6 bg-white">
+          <h4 class="text-2xl font-meidum">ผลการค้นหา : 179 รายการ</h4>
+        </div>
+        <div class=" w-full p-6 " style="background:hsla(0,0%,100%,.67)">
+          <h1 class="text-4xl font-semibold">กทม.</h1>
+          <span class="text-red-600">หมายเหตุ <br>
+            กรณีเปลี่ยนสาขาวิชาที่สมัครหรืออันดับหรือโครงการที่สมัคร ต้องสมัครใหม่ และชำระเงินค่าสมัครใหม่เท่านั้น
+            โดยสถาบันฯ จะถือว่าการสมัครครั้งสุดท้ายที่มีการชําระเงินค่าสมัครเรียบร้อยแล้วเป็นครั้งที่ต้องการเข้าสอบ
+            และครั้งที่สมัครก่อนหน้าจะถือเป็นโมฆะ แม้ว่าจะชําระเงินค่าสมัครแล้วก็ตาม</span>
+          <v-row>
+            <v-col v-for="card in cards" :key="card" cols="12">
+              <v-card>
+                <v-card-title>
+                  <h3> หลักสูตร : การจัดการความปลอดภัยอาหาร
+                    <div> แผนการศึกษา : แผน ก2 <span>|</span> ช่วงเวลาเรียน : ปกติ <span><span>|</span> เฉพาะ : </span>
+                    </div>
+                  </h3>
+                </v-card-title>
+                <v-card-text>
+                  <v-chip class="mr-1 mt-1" color="orange darken-3" text-color="white" small>
+                    1 /2565
+                  </v-chip>
+                  <v-chip class="mr-1 mt-1" color="red" text-color="white" small>
+                    รอบ 1 -
+                    รับสมัครประจำภาคการศึกษา
+                  </v-chip>
+                  <v-chip class="mr-1 mt-1" color="deep-purple" text-color="white" small>
+                    โครงการ
+                    รับเข้า 1/2565 คณะอุตสาหกรรมอาหาร (โครงการแววนวัตกร)
+                  </v-chip>
+                  <h3 lass="deep-orange--text"> คณะ อุตสาหกรรมอาหาร </h3>
+                  หลักสูตร : การจัดการความปลอดภัยอาหาร / Food Safety Management <br>
+                  <h3> วันที่เปิดรับสมัคร : <span class="light-blue--text text--darken-4">22 กุมภาพันธ์ 2022 - 10
+                      มิถุนายน 2022 </span></h3>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn color="blue" dark large text-color="white">
+                    สมัคร
+                  </v-btn>
+                  <v-btn color="deep-purple" dark large text-color="white">
+                    ประกาศรับสมัคร
+                  </v-btn>
+                  <v-btn color="red" dark large text-color="white">
+                    คุณสมบัติผู้สมัคร
+                  </v-btn>
 
-                    <v-list-item-content>
-                      <v-list-item-title>Message {{ n }}</v-list-item-title>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </div>
 
-                      <v-list-item-subtitle>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil repellendus distinctio similique
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
 
-                  <v-divider v-if="n !== 6" :key="`divider-${n}`" inset></v-divider>
-                </template>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
       </v-container>
     </v-main>
   </v-app>

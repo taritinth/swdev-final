@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { logger } = require("./middleware");
+// const { logger } = require("./middleware");
 const { connectRealDB } = require("./config/database");
 
 const PORT = process.env.PORT || 8081;
@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
-app.use(logger);
+// app.use(logger);
 app.use(router);
 
 app.get("/", (req, res) => {
